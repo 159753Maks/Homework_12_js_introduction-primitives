@@ -1,17 +1,34 @@
-// const str = "a123";
-// console.log("98".charCodeAt(1) - "0".charCodeAt(0));
-// console.log("z".charCodeAt(0) - "a".charCodeAt(0) + 10);
-let str = "123.989";
-// str = str.replace("9", "");
-// str = str.replaceAll("", "9")
 
-// console.log(str.trim() == "123.989");
-// console.log("Hello world"[1]);
-// for (let i = 0; i < str.length; i++){
-//     console.log(str[i])
-// }
-//  console.log(myParseInt("10", 2) + 0x10)
-function myParseInt(numStr, radix=10) {
+function myParseInt(numStr, radix = 10) {
+    if (typeof numStr !== 'string') numStr = String(numStr).trim();
+    else numStr = numStr.trim();
+
+    if (radix < 2 || radix > 36) return NaN;
+
+    let res = 0;
+    let start = 0;
+    let isNegative = false;
+
+    if (numStr[0] === '-') {
+        isNegative = true;
+        start = 1;
+    }
+
+    for (let i = start; i < numStr.length; i++) {
+        const char = numStr[i];
+
+        let digit;
+        if (char >= "0" && char <= "9") digit = char.charCodeAt(0) - "0".charCodeAt(0);
+        else if (char >= "a" && char <= "z") digit = char.charCodeAt(0) - "a".charCodeAt(0) + 10;
+        else if (char >= "A" && char <= "Z") digit = char.charCodeAt(0) - "A".charCodeAt(0) + 10;
+        else break;
+
+        if (digit >= radix) return NaN;
+
+        res = res * radix + digit;
+    }
+
+    return isNegative ? -res : res;
     //TODO 
     //imitation of standard parseInt
     //disallowed: unary operator +; parseInt
